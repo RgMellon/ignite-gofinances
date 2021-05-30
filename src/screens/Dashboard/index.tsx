@@ -1,9 +1,40 @@
 import React from 'react'
+
 import { HighlightCart } from '../../HighlightCard'
+import { TransactionCard, TransactionCardData } from '../../TransactionCard'
 
 import * as S from './styles'
 
+export type DataListProps = {
+  id: string
+} & TransactionCardData
+
 export function Dashboard() {
+  const data: DataListProps[] = [
+    {
+      id: '1',
+      type: 'positive',
+      title: 'Desenvolvimento de site',
+      amount: 'R$ 12.00,00',
+      category: {
+        name: 'vendas',
+        icon: 'dollar-sign'
+      },
+      date: '12/08/2020'
+    },
+    {
+      id: '2',
+      type: 'negative',
+      title: 'Pizza maneira',
+      amount: 'R$ 50,00',
+      category: {
+        name: 'Alimentação',
+        icon: 'coffee'
+      },
+      date: '12/08/2020'
+    }
+  ]
+
   return (
     <S.Container>
       <S.Header>
@@ -45,6 +76,18 @@ export function Dashboard() {
           type="total"
         />
       </S.HighlightCarts>
+
+      <S.Transactions>
+        <S.Title> Listagem </S.Title>
+
+        <S.TransactionList
+          data={data}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => <TransactionCard data={item} />}
+        />
+
+        {/* <TransactionCard data={data} /> */}
+      </S.Transactions>
     </S.Container>
   )
 }
