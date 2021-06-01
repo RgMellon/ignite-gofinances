@@ -1,7 +1,10 @@
 import React from 'react'
 
-import { HighlightCart } from '../../HighlightCard'
-import { TransactionCard, TransactionCardData } from '../../TransactionCard'
+import { HighlightCart } from '../../components/HighlightCard'
+import {
+  TransactionCard,
+  TransactionCardData
+} from '../../components/TransactionCard'
 
 import * as S from './styles'
 
