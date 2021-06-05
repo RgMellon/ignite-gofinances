@@ -53,7 +53,10 @@ export function Dashboard() {
               <S.UserName>Renan</S.UserName>
             </S.User>
           </S.UserInfo>
-          <S.Icon name="power" />
+
+          <S.LogoutButton onPress={() => alert('oi')}>
+            <S.Icon name="power" />
+          </S.LogoutButton>
         </S.UserWrapper>
       </S.Header>
 
