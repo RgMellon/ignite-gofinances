@@ -1,4 +1,8 @@
-import React from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
+import { useFocusEffect } from '@react-navigation/native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
+const dataKey = '@gofinances:transactions'
 
 import { HighlightCart } from '../../components/HighlightCard'
 import {
@@ -13,30 +17,44 @@ export type DataListProps = {
 } & TransactionCardData
 
 export function Dashboard() {
-  const data: DataListProps[] = [
-    {
-      id: '1',
-      type: 'positive',
-      title: 'Desenvolvimento de site',
-      amount: 'R$ 12.00,00',
-      category: {
-        name: 'vendas',
-        icon: 'dollar-sign'
-      },
-      date: '12/08/2020'
-    },
-    {
-      id: '2',
-      type: 'negative',
-      title: 'Pizza maneira',
-      amount: 'R$ 50,00',
-      category: {
-        name: 'Alimentação',
-        icon: 'coffee'
-      },
-      date: '12/08/2020'
-    }
-  ]
+  const [data, setData] = useState<DataListProps[]>([])
+
+  async function loadTransaction() {
+    const response = await AsyncStorage.getItem(dataKey)
+    const transactions = response ? JSON.parse(response!) : []
+
+    const transactionsFormatted: DataListProps[] = transactions.map(
+      (transaction: DataListProps) => {
+        const amount = Number(transaction.amount).toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL'
+        })
+
+        const date = Intl.DateTimeFormat('pt-BR', {
+          day: '2-digit',
+          month: '2-digit',
+          year: '2-digit'
+        }).format(new Date(transaction.date))
+
+        return {
+          id: transaction.id,
+          name: transaction.name,
+          amount,
+          type: transaction.type,
+          category: transaction.category,
+          date
+        }
+      }
+    )
+
+    setData(transactionsFormatted)
+  }
+
+  useFocusEffect(
+    useCallback(() => {
+      loadTransaction()
+    }, [])
+  )
 
   return (
     <S.Container>

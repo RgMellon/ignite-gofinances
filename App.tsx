@@ -1,4 +1,6 @@
 import 'react-native-gesture-handler'
+import 'intl'
+import 'intl/locale-data/jsonp/pt-BR'
 
 import React from 'react'
 import AppLoading from 'expo-app-loading'
@@ -14,8 +16,6 @@ import {
 } from '@expo-google-fonts/poppins'
 
 import theme from './src/global/styles/theme'
-// import { Dashboard } from './src/screens/Dashboard'
-// import { Register } from './src/screens/Regiter'
 
 export default function App() {
   const [fontsLoaded] = useFonts({
