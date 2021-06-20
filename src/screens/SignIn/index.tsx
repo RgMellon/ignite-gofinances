@@ -12,12 +12,13 @@ import { useAuth } from '../../hooks/auth'
 import * as S from './styles'
 
 export function SignIn() {
-  const { user, signInWithGoogle, signInWithApple } = useAuth()
+  const { signInWithGoogle, signInWithApple } = useAuth()
 
   async function handleSignInGoogle() {
     try {
       await signInWithGoogle()
     } catch (err) {
+      console.log(err)
       Alert.alert('Ops, aconteceu algo de errado')
     }
   }
