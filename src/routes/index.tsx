@@ -8,11 +8,7 @@ import { useAuth } from '../hooks/auth'
 import { ActivityIndicator } from 'react-native'
 
 export function Routes() {
-  const { user, loading } = useAuth()
-
-  if (loading) {
-    return <ActivityIndicator size="large" color="red" />
-  }
+  const { user } = useAuth()
 
   return (
     <NavigationContainer>

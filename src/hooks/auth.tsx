@@ -20,6 +20,7 @@ type AuthContextData = {
   loading: boolean
   signInWithGoogle(): Promise<void>
   signInWithApple(): Promise<void>
+  signOut(): Promise<void>
 }
 
 const AuthContext = createContext({} as AuthContextData)
@@ -101,9 +102,14 @@ function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
+  async function signOut() {
+    await AsyncStorage.removeItem('@gofinances:user')
+    setUser({} as User)
+  }
+
   return (
     <AuthContext.Provider
-      value={{ user, signInWithGoogle, signInWithApple, loading }}
+      value={{ user, signInWithGoogle, signInWithApple, loading, signOut }}
     >
       {children}
     </AuthContext.Provider>

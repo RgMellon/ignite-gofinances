@@ -1,6 +1,8 @@
-import React from 'react'
-import { Alert } from 'react-native'
+import React, { useState } from 'react'
+import { ActivityIndicator, Alert } from 'react-native'
 import { RFValue } from 'react-native-responsive-fontsize'
+
+import { useTheme } from 'styled-components'
 
 import AppleSvg from '../../assets/apple.svg'
 import GoogleSvg from '../../assets/google.svg'
@@ -12,22 +14,31 @@ import { useAuth } from '../../hooks/auth'
 import * as S from './styles'
 
 export function SignIn() {
+  const theme = useTheme()
+
+  const [isLoading, setIsLoading] = useState(false)
+
   const { signInWithGoogle, signInWithApple } = useAuth()
 
   async function handleSignInGoogle() {
+    setIsLoading(true)
     try {
-      await signInWithGoogle()
+      return await signInWithGoogle()
     } catch (err) {
       console.log(err)
       Alert.alert('Ops, aconteceu algo de errado')
+      setIsLoading(false)
     }
   }
 
   async function handleSignInWithApple() {
+    setIsLoading(true)
     try {
-      await signInWithApple()
+      return await signInWithApple()
     } catch (err) {
       Alert.alert('Ops, aconteceu algo de errado')
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -61,6 +72,13 @@ export function SignIn() {
             onPress={handleSignInWithApple}
           />
         </S.FooterWrapper>
+        {isLoading && (
+          <ActivityIndicator
+            style={{ marginTop: 18 }}
+            size="small"
+            color={theme.colors.shape}
+          />
+        )}
       </S.Footer>
     </S.Container>
   )

@@ -5,11 +5,8 @@ import 'intl/locale-data/jsonp/pt-BR'
 import React from 'react'
 import AppLoading from 'expo-app-loading'
 import { ThemeProvider } from 'styled-components'
-import { NavigationContainer } from '@react-navigation/native'
 
-import { SignIn } from './src/screens/SignIn'
-
-import { AuthProvider } from './src/hooks/auth'
+import { AuthProvider, useAuth } from './src/hooks/auth'
 
 import {
   useFonts,
@@ -23,13 +20,15 @@ import { StatusBar } from 'react-native'
 import { Routes } from './src/routes'
 
 export default function App() {
+  const { loading } = useAuth()
+
   const [fontsLoaded] = useFonts({
     Poppins_400Regular,
     Poppins_500Medium,
     Poppins_700Bold
   })
 
-  if (!fontsLoaded) {
+  if (!fontsLoaded || loading) {
     return <AppLoading />
   }
 

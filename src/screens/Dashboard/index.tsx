@@ -13,6 +13,7 @@ import {
 } from '../../components/TransactionCard'
 
 import * as S from './styles'
+import { useAuth } from '../../hooks/auth'
 
 export type DataListProps = {
   id: string
@@ -31,6 +32,8 @@ type HighlightData = {
 
 export function Dashboard() {
   const theme = useTheme()
+  const { signOut, user } = useAuth()
+
   const [isLoading, setIsLoading] = useState(true)
 
   const [data, setData] = useState<DataListProps[]>([])
@@ -158,16 +161,16 @@ export function Dashboard() {
               <S.UserInfo>
                 <S.Photo
                   source={{
-                    uri: 'https://avatars.githubusercontent.com/u/29661994?v=4'
+                    uri: user?.photo
                   }}
                 />
                 <S.User>
                   <S.UserGreeting>Olá,</S.UserGreeting>
-                  <S.UserName>Renan</S.UserName>
+                  <S.UserName>{user.name}</S.UserName>
                 </S.User>
               </S.UserInfo>
 
-              <S.LogoutButton onPress={() => alert('oi')}>
+              <S.LogoutButton onPress={signOut}>
                 <S.Icon name="power" />
               </S.LogoutButton>
             </S.UserWrapper>
