@@ -4,7 +4,6 @@ import { useFocusEffect } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { useTheme } from 'styled-components'
-const dataKey = '@gofinances:transactions'
 
 import { HighlightCart } from '../../components/HighlightCard'
 import {
@@ -45,12 +44,20 @@ export function Dashboard() {
     collectionTransactions: DataListProps[],
     type: 'positive' | 'negative'
   ) {
+    const filtredCollection = collectionTransactions.filter(
+      (transaction) => transaction.type === type
+    )
+
+    if (filtredCollection.length === 0) {
+      return 0
+    }
+
     const lastTransaction = new Date(
       Math.max.apply(
         Math,
-        collectionTransactions
-          .filter((transaction) => transaction.type === type)
-          .map((transaction) => new Date(transaction.date).getTime())
+        filtredCollection.map((transaction) =>
+          new Date(transaction.date).getTime()
+        )
       )
     )
 
@@ -64,6 +71,7 @@ export function Dashboard() {
   }
 
   async function loadTransaction() {
+    const dataKey = `@gofinances:transactions_user:${user.id}`
     const response = await AsyncStorage.getItem(dataKey)
     const transactions = response ? JSON.parse(response!) : []
 
@@ -113,13 +121,17 @@ export function Dashboard() {
 
     const totalInterval = `01 a ${lastTransactionsExpensives}`
 
+    console.log(lastTransactionsEntry)
     setHighlightData({
       entries: {
         total: expensiveTotal.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL'
         }),
-        lastTransaction: `Última entrada dia ${lastTransactionsEntry}`
+        lastTransaction:
+          lastTransactionsEntry === 0
+            ? 'Não há transações'
+            : `Última entrada dia ${lastTransactionsEntry}`
       },
 
       expensives: {
@@ -127,7 +139,10 @@ export function Dashboard() {
           style: 'currency',
           currency: 'BRL'
         }),
-        lastTransaction: `Última saída dia ${lastTransactionsExpensives}`
+        lastTransaction:
+          lastTransactionsEntry === 0
+            ? 'Não há transações'
+            : `Última saída dia ${lastTransactionsExpensives}`
       },
 
       resume: {
