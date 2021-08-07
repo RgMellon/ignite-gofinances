@@ -6,14 +6,15 @@ import * as S from './styles'
 type CategorySelectorProps = {
   title: string
   onPress: () => void
-}
+} & TouchableOpacityProps
 
 export function CategorySelectButton({
   title,
-  onPress
+  onPress,
+  ...rest
 }: CategorySelectorProps) {
   return (
-    <S.Container onPress={onPress}>
+    <S.Container onPress={onPress} {...rest}>
       <S.Category>{title}</S.Category>
 
       <S.Icon name="chevron-down" />

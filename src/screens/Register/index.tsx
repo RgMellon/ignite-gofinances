@@ -61,7 +61,9 @@ export function Register() {
   }
 
   function handleOpenSelectCategoryModal() {
-    setCategoryModalOpen(true)
+    setTimeout(() => {
+      setCategoryModalOpen(true)
+    }, 1000)
   }
 
   async function handleRegister(form: FormData) {
@@ -120,7 +122,6 @@ export function Register() {
               autoCorrect={false}
               error={errors.name && errors.name.message}
             />
-
             <InputForm
               name="amount"
               keyboardType="numeric"
@@ -128,7 +129,6 @@ export function Register() {
               placeholder="Preço"
               error={errors.amount && errors.amount.message}
             />
-
             <S.TransactionTypes>
               <TransactionTypeButton
                 type="up"
@@ -143,8 +143,8 @@ export function Register() {
                 onPress={() => handlTransactionTypeSelect('negative')}
               />
             </S.TransactionTypes>
-
             <CategorySelectButton
+              testID="button-category"
               title={category.name}
               onPress={handleOpenSelectCategoryModal}
             />
@@ -152,7 +152,8 @@ export function Register() {
 
           <Button title="Enviar" onPress={handleSubmit(handleRegister)} />
         </S.Form>
-        <Modal visible={categoryModalOpen}>
+
+        <Modal visible={categoryModalOpen} testID="modal-category">
           <CategorySelect
             category={category}
             setCategory={setCategory}
